@@ -8,7 +8,6 @@ import androidx.navigation.compose.composable
 import androidx.window.layout.DisplayFeature
 import com.example.singlearchitecture.ui.detail.DetailScreen
 import com.example.singlearchitecture.ui.detail.DetailViewModel
-import com.example.singlearchitecture.ui.home.HomeContent
 import com.example.singlearchitecture.ui.home.HomeScreen
 import com.example.singlearchitecture.ui.home.HomeViewModel
 

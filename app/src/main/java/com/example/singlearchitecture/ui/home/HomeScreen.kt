@@ -15,14 +15,18 @@ import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,28 +38,26 @@ import com.example.singlearchitecture.ui.Screen
 @Composable
 fun HomeScreen(vm: HomeViewModel, navigate: (String) -> Unit) {
     val uiState by vm.uiState.collectAsStateWithLifecycle()
-    HomeContent(uiState = uiState, navigate = navigate)
+    HomeStateScreen(uiState = uiState, navigate = navigate)
 }
 
 @Composable
-fun HomeContent(
+fun HomeStateScreen(
     uiState: HomeUiState,
     navigate: (String) -> Unit
 ) {
-
     when (uiState) {
-        is HomeUiState.Error -> ErrorScreen(message = uiState.message)
-
         is HomeUiState.Loading -> FullLoadingScreen()
 
-        is HomeUiState.Success -> HomeContentScreen(uiState = uiState, navigate = navigate)
+        is HomeUiState.Success -> HomeContent(navigate = navigate)
+
+        is HomeUiState.Error -> ErrorScreen(message = uiState.message)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeContentScreen(
-    uiState: HomeUiState,
+fun HomeContent(
     navigate: (String) -> Unit
 ) {
     Surface(
@@ -63,40 +65,45 @@ fun HomeContentScreen(
             .fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        Scaffold(
-            topBar = {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+        val scope = rememberCoroutineScope()
+        ModalNavigationDrawer(drawerContent = {}, drawerState = drawerState) {
+            Scaffold(
+                topBar = {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Icon(
+                            Icons.Rounded.Home,
+                            contentDescription = "Logo",
+                            modifier = Modifier
+                                .width(30.dp)
+                                .height(30.dp),
+                            tint = Color.Magenta
+                        )
+                        Text(text = "New")
+                    }
+                },
+
+                ) { padding ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding)
                 ) {
-                    Icon(
-                        Icons.Rounded.Home,
-                        contentDescription = "Logo",
-                        modifier = Modifier
-                            .width(30.dp)
-                            .height(30.dp),
-                        tint = Color.Magenta
-                    )
-                    Text(text = "New")
-                }
-            }
-        ) { padding ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding)
-            ) {
 
-                Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
 
-                Text(text = "Fill")
+                    Text(text = "Fill")
 
-                Spacer(modifier = Modifier.weight(1f))
+                    Spacer(modifier = Modifier.weight(1f))
 
-                Button(onClick = {
+                    Button(onClick = {
 
-                }) {
-                    navigate(Screen.Detail.createRoute("Dummy"))
+                    }) {
+                        navigate(Screen.Detail.createRoute("Dummy"))
+                    }
                 }
             }
         }
@@ -110,7 +117,13 @@ fun FullLoadingScreen() {
             .fillMaxSize()
             .wrapContentSize(Alignment.Center)
     ) {
-        CircularProgressIndicator()
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CircularProgressIndicator()
+        }
     }
 }
 
@@ -132,6 +145,6 @@ fun ErrorScreen(message: String) {
 @Composable
 fun PreviewHomeContent() {
     Surface {
-        HomeContent(uiState = HomeUiState.Loading, navigate = {})
+        HomeStateScreen(uiState = HomeUiState.Loading, navigate = {})
     }
 }

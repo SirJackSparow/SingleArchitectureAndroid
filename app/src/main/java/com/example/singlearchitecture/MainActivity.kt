@@ -15,7 +15,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.singlearchitecture.ui.SingleActivityApp
 import com.example.singlearchitecture.ui.theme.SingleArchitectureTheme
 import com.google.accompanist.adaptive.calculateDisplayFeatures
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
