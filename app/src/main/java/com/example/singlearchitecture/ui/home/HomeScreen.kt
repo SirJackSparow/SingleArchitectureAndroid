@@ -14,6 +14,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,8 +34,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.singlearchitecture.ui.Screen
 
@@ -62,50 +73,51 @@ fun HomeContent(
 ) {
     Surface(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .padding(horizontal = 10.dp, vertical = 10.dp),
         color = MaterialTheme.colorScheme.background
     ) {
-        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-        val scope = rememberCoroutineScope()
-        ModalNavigationDrawer(drawerContent = {}, drawerState = drawerState) {
-            Scaffold(
-                topBar = {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Icon(
-                            Icons.Rounded.Home,
-                            contentDescription = "Logo",
-                            modifier = Modifier
-                                .width(30.dp)
-                                .height(30.dp),
-                            tint = Color.Magenta
+        Column() {
+            Text(
+                buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            color = Color.Black,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = FontFamily.SansSerif,
+                            fontSize = 25.sp
                         )
-                        Text(text = "New")
+                    ) {
+                        append("Welcome to Git Api ")
                     }
-                },
-
-                ) { padding ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding)
-                ) {
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Text(text = "Fill")
-
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    Button(onClick = {
-
-                    }) {
-                        navigate(Screen.Detail.createRoute("Dummy"))
+                    withStyle(
+                        style = SpanStyle(
+                            color = Color.Blue,
+                            fontWeight = FontWeight.ExtraBold
+                        )
+                    ) {
+                        append("Version 1")
                     }
                 }
+            )
+
+            Card(
+                elevation = CardDefaults.elevatedCardElevation(pressedElevation = 4.dp),
+                colors = CardDefaults.cardColors(
+                    contentColor = Color.White
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .height(150.dp)
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                ) {
+                    Text(text = "kk")
+                }
             }
+
         }
     }
 }
@@ -145,6 +157,6 @@ fun ErrorScreen(message: String) {
 @Composable
 fun PreviewHomeContent() {
     Surface {
-        HomeStateScreen(uiState = HomeUiState.Loading, navigate = {})
+        HomeStateScreen(uiState = HomeUiState.Success(data = ""), navigate = {})
     }
 }
