@@ -15,6 +15,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.tooling.preview.Preview
@@ -59,7 +60,12 @@ fun GraphictLineCompose() {
                 .fillMaxSize()
                 .drawWithCache {
                     onDrawBehind {
-
+                        val path = Path()
+                        path.cubicTo(x1 = 10f, y1 = 20f, x2 = 30f, y2 = 40f, x3 = 40f, y3 = 8f)
+                        drawPath(color = Color.Green, path = path, style = Stroke(
+                            width = 3.dp.toPx(),
+                            pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f))
+                        ))
                     }
                 }
         ) {
