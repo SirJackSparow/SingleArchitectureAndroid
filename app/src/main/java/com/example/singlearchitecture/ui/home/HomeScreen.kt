@@ -1,6 +1,8 @@
 package com.example.singlearchitecture.ui.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
@@ -33,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -45,6 +49,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.singlearchitecture.ui.Screen
+import com.example.singlearchitecture.ui.theme.Triadic100
+import com.example.singlearchitecture.ui.theme.Triadic50
 
 @Composable
 fun HomeScreen(vm: HomeViewModel, navigate: (String) -> Unit) {
@@ -82,23 +88,24 @@ fun HomeContent(
                 buildAnnotatedString {
                     withStyle(
                         style = SpanStyle(
-                            color = Color.Black,
+                            color = Color.Gray,
                             fontWeight = FontWeight.Bold,
                             fontFamily = FontFamily.SansSerif,
-                            fontSize = 25.sp
+                            fontSize = 15.sp
                         )
                     ) {
                         append("Welcome to Git Api ")
                     }
                     withStyle(
                         style = SpanStyle(
-                            color = Color.Blue,
+                            color = Color.LightGray,
                             fontWeight = FontWeight.ExtraBold
                         )
                     ) {
                         append("Version 1")
                     }
-                }
+                },
+                modifier = Modifier.padding(horizontal = 10.dp)
             )
 
             Card(
@@ -111,10 +118,18 @@ fun HomeContent(
                     .padding(10.dp)
                     .height(150.dp)
             ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                Box(
+                    modifier = Modifier
+                        .background(
+                            brush = Brush.horizontalGradient(
+                                colors = listOf(
+                                    Triadic100, Triadic50
+                                )
+                            )
+                        )
+                        .fillMaxSize()
                 ) {
-                    Text(text = "kk")
+
                 }
             }
 
