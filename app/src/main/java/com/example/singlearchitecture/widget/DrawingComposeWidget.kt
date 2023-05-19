@@ -237,6 +237,7 @@ fun LineChart(
 @Composable
 fun PreviewDrawingCompose() {
     Surface() {
-        LineChart()
+        val data = listOf(Pair(2, 30.34), Pair(3, 50.34),Pair(5, 80.34),Pair(7, 90.34),Pair(9, 130.34))
+        LineChart(data = data, modifier = Modifier.fillMaxSize().background(Color.Black))
     }
 }
