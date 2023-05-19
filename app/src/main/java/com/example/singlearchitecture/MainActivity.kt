@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.singlearchitecture.ui.SingleActivityApp
 import com.example.singlearchitecture.ui.theme.SingleArchitectureTheme
+import com.example.singlearchitecture.widget.GraphictLineCompose
 import com.google.accompanist.adaptive.calculateDisplayFeatures
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,10 +27,11 @@ class MainActivity : ComponentActivity() {
             val windowSizeClass = calculateWindowSizeClass(this)
             val displayFeatures = calculateDisplayFeatures(this)
             SingleArchitectureTheme {
-                SingleActivityApp(
-                    windowSizeClass = windowSizeClass,
-                    displayFeatures = displayFeatures
-                )
+//                SingleActivityApp(
+//                    windowSizeClass = windowSizeClass,
+//                    displayFeatures = displayFeatures
+//                )
+                GraphictLineCompose()
             }
         }
     }
