@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Refresh
@@ -32,7 +33,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -77,6 +80,15 @@ fun HomeStateScreen(
 fun HomeContent(
     navigate: (String) -> Unit
 ) {
+
+    val stateList = rememberLazyListState()
+    val isScrollToEnd by remember {
+        derivedStateOf {
+            stateList.layoutInfo.visibleItemsInfo.lastOrNull()?.index == stateList.layoutInfo.totalItemsCount - 1
+        }
+    }
+
+
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -129,9 +141,16 @@ fun HomeContent(
                         )
                         .fillMaxSize()
                 ) {
-
+                    Text(
+                        text = "Single Architecture Android Compose",
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        modifier = Modifier.padding(20.dp)
+                    )
                 }
             }
+
 
         }
     }
@@ -172,6 +191,7 @@ fun ErrorScreen(message: String) {
 @Composable
 fun PreviewHomeContent() {
     Surface {
-        HomeStateScreen(uiState = HomeUiState.Success(data = ""), navigate = {})
+        HomeStateScreen(uiState = HomeUiState.Success(data = ""), navigate = {
+        })
     }
 }

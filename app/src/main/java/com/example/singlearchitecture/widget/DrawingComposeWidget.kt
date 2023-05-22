@@ -152,7 +152,7 @@ fun LineChart(
 ) {
     val spacing = 100f
     val graphColor = Color.Cyan
-    val transparentGraphColor = remember { graphColor.copy(alpha = 0.5f) }
+    val transparentGraphColor = remember { graphColor.copy(alpha = 0.3f) }
     val upperValue = remember { (data.maxOfOrNull { it.second }?.plus(1))?.roundToInt() ?: 0 }
     val lowerValue = remember { (data.minOfOrNull { it.second }?.toInt() ?: 0) }
     val density = LocalDensity.current
@@ -167,7 +167,7 @@ fun LineChart(
 
     Canvas(modifier = modifier) {
         val spacePerHour = (size.width - spacing) / data.size
-        (data.indices step 2).forEach { i ->
+        (data.indices).forEach { i ->
             val hour = data[i].first
             drawContext.canvas.nativeCanvas.apply {
                 drawText(
@@ -200,7 +200,9 @@ fun LineChart(
                 val x1 = spacing + i * spacePerHour
                 val y1 = height - spacing - (ratio * height).toFloat()
 
-                if (i == 0) { moveTo(x1, y1) }
+                if (i == 0) {
+                    moveTo(x1, y1)
+                }
                 lineTo(x1, y1)
             }
         }
@@ -209,8 +211,8 @@ fun LineChart(
             path = strokePath,
             color = graphColor,
             style = Stroke(
-                width = 2.dp.toPx(),
-                cap = StrokeCap.Round
+                width = 1.dp.toPx(),
+                cap = StrokeCap.Butt
             )
         )
 
@@ -233,11 +235,21 @@ fun LineChart(
 
     }
 }
+
 @Preview
 @Composable
 fun PreviewDrawingCompose() {
     Surface() {
-        val data = listOf(Pair(2, 30.34), Pair(3, 50.34),Pair(5, 80.34),Pair(7, 90.34),Pair(9, 130.34))
-        LineChart(data = data, modifier = Modifier.fillMaxSize().background(Color.Black))
+        val data = listOf(
+            Pair(10, 30.0),
+            Pair(20, 28.0),
+            Pair(30, 20.3),
+            Pair(40, 10.0),
+            Pair(50, 17.0),
+            Pair(60, 13.0),
+        )
+        LineChart(data = data, modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black))
     }
 }
