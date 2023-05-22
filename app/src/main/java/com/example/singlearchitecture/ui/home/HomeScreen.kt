@@ -191,7 +191,9 @@ fun ErrorScreen(message: String) {
 @Composable
 fun PreviewHomeContent() {
     Surface {
-        HomeStateScreen(uiState = HomeUiState.Success(data = ""), navigate = {
-        })
+        HomeStateScreen(
+            uiState = HomeUiState.Success(data = emptyList(), loadNextPage = true),
+            navigate = {
+            })
     }
 }
