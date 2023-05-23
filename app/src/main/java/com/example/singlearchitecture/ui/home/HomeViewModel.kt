@@ -14,13 +14,13 @@ import kotlinx.coroutines.launch
 class HomeViewModel : ViewModel() {
 
     private var page = 1
-    private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     private var query = "super"
     private var sort = ""
+    private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
+
     private val exceptionHandler = CoroutineExceptionHandler { _, _ ->
         _uiState.value = HomeUiState.Error("")
     }
-
     val uiState: StateFlow<HomeUiState> get() = _uiState
 
     init {
