@@ -5,7 +5,6 @@ import com.example.singlearchitecture.utilities.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface GetUserRepo {
-
     suspend fun getDataUsers(
         q: String,
         page: Int,

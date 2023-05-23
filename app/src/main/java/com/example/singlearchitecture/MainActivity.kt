@@ -27,28 +27,11 @@ class MainActivity : ComponentActivity() {
             val windowSizeClass = calculateWindowSizeClass(this)
             val displayFeatures = calculateDisplayFeatures(this)
             SingleArchitectureTheme {
-//                SingleActivityApp(
-//                    windowSizeClass = windowSizeClass,
-//                    displayFeatures = displayFeatures
-//                )
-                GraphictLineCompose()
+                SingleActivityApp(
+                    windowSizeClass = windowSizeClass,
+                    displayFeatures = displayFeatures
+                )
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SingleArchitectureTheme {
-        Greeting("Android")
     }
 }

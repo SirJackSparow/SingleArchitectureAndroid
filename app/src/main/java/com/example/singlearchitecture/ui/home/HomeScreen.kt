@@ -51,6 +51,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.singlearchitecture.data.networks.model.UsersRandomModelItem
 import com.example.singlearchitecture.ui.Screen
 import com.example.singlearchitecture.ui.theme.Triadic100
 import com.example.singlearchitecture.ui.theme.Triadic50
@@ -69,7 +70,7 @@ fun HomeStateScreen(
     when (uiState) {
         is HomeUiState.Loading -> FullLoadingScreen()
 
-        is HomeUiState.Success -> HomeContent(navigate = navigate)
+        is HomeUiState.Success -> HomeContent(navigate = navigate, list = uiState.data)
 
         is HomeUiState.Error -> ErrorScreen(message = uiState.message)
     }
@@ -78,7 +79,8 @@ fun HomeStateScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeContent(
-    navigate: (String) -> Unit
+    navigate: (String) -> Unit,
+    list: List<UsersRandomModelItem>
 ) {
 
     val stateList = rememberLazyListState()
@@ -87,7 +89,6 @@ fun HomeContent(
             stateList.layoutInfo.visibleItemsInfo.lastOrNull()?.index == stateList.layoutInfo.totalItemsCount - 1
         }
     }
-
 
     Surface(
         modifier = Modifier
