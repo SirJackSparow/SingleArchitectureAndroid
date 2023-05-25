@@ -1,5 +1,6 @@
 package com.example.singlearchitecture.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Refresh
@@ -32,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -55,18 +60,26 @@ import com.example.singlearchitecture.widget.ButtonFend
 @Composable
 fun HomeScreen(vm: HomeViewModel, navigate: (String) -> Unit) {
     val uiState by vm.uiState.collectAsStateWithLifecycle()
-    HomeStateScreen(uiState = uiState, navigate = navigate)
+    Log.e("TAG", uiState.toString() )
+    HomeStateScreen(uiState = uiState, navigate = navigate, nextPaging = { vm.nextPage() })
 }
 
 @Composable
 fun HomeStateScreen(
     uiState: HomeUiState,
-    navigate: (String) -> Unit
+    navigate: (String) -> Unit,
+    nextPaging: () -> Unit
 ) {
     when (uiState) {
         is HomeUiState.Loading -> FullLoadingScreen()
 
-        is HomeUiState.Success -> HomeContent(navigate = navigate, list = uiState.data)
+        is HomeUiState.Success -> HomeContent(
+            navigate = navigate,
+            list = uiState.data,
+            uiState = uiState,
+            nextPaging = nextPaging,
+            loadNext = uiState.loadNextPage
+        )
 
         is HomeUiState.Error -> ErrorScreen(message = uiState.message)
     }
@@ -76,14 +89,22 @@ fun HomeStateScreen(
 @Composable
 fun HomeContent(
     navigate: (String) -> Unit,
-    list: List<UsersRandomModelItem>
+    list: List<UsersRandomModelItem>,
+    uiState: HomeUiState,
+    nextPaging: () -> Unit,
+    loadNext: Boolean
 ) {
 
     val stateList = rememberLazyListState()
+
     val isScrollToEnd by remember {
         derivedStateOf {
             stateList.layoutInfo.visibleItemsInfo.lastOrNull()?.index == stateList.layoutInfo.totalItemsCount - 1
         }
+    }
+
+    if (isScrollToEnd && loadNext.not()) {
+        nextPaging()
     }
 
     Surface(
@@ -147,8 +168,21 @@ fun HomeContent(
                     )
                 }
             }
-
-
+            LazyColumn(state = stateList) {
+                items(list) { userItems ->
+                    ItemListUser(userData = userItems)
+                }
+                if (loadNext) {
+                    item {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                                .wrapContentWidth(Alignment.CenterHorizontally)
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -185,7 +219,7 @@ fun ErrorScreen(message: String) {
 }
 
 @Composable
-fun ItemListUser() {
+fun ItemListUser(userData: UsersRandomModelItem?) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -193,7 +227,7 @@ fun ItemListUser() {
     ) {
         val (image, chip, title, description) = createRefs()
         AsyncImage(
-            model = "",
+            model = userData?.avatar_url ?: "",
             contentDescription = "User Profile Pics",
             modifier = Modifier
                 .constrainAs(image) {
@@ -206,7 +240,7 @@ fun ItemListUser() {
         )
 
         Text(
-            text = "Title",
+            text = userData?.login ?: "No name",
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily.SansSerif,
@@ -233,13 +267,15 @@ fun ItemListUser() {
             maxLines = 3,
             color = Color.Gray
         )
-        ButtonFend(modifier = Modifier
-            .width(70.dp)
-            .height(30.dp)
-            .constrainAs(chip) {
-                top.linkTo(description.bottom)
-                end.linkTo(parent.end)
-            }
+        ButtonFend(
+            modifier = Modifier
+                .width(70.dp)
+                .height(30.dp)
+                .constrainAs(chip) {
+                    top.linkTo(description.bottom)
+                    end.linkTo(parent.end)
+                },
+            type = userData?.type ?: "Users"
         )
     }
 }
@@ -252,6 +288,6 @@ fun PreviewHomeContent() {
 //            uiState = HomeUiState.Success(data = emptyList(), loadNextPage = true),
 //            navigate = {
 //            })
-        ItemListUser()
+        ItemListUser(null)
     }
 }

@@ -32,7 +32,8 @@ fun RoundedShapes() {
 @Composable
 fun ButtonFend(
     modifier: Modifier = Modifier,
-    colorsGradient: List<Color> = listOf(Triadic100, Triadic50)
+    colorsGradient: List<Color> = listOf(Triadic100, Triadic50),
+    type: String
 ) {
     Surface(
         modifier = modifier.border(
@@ -42,7 +43,7 @@ fun ButtonFend(
         )
     ) {
         Text(
-            text = "Users",
+            text = type,
             textAlign = TextAlign.Center,
             modifier = Modifier.wrapContentHeight()
         )
@@ -57,5 +58,6 @@ fun PreviewRoundedShapeDesign() {
         modifier = Modifier
             .width(100.dp)
             .height(50.dp),
+        type = "Users"
     )
 }
