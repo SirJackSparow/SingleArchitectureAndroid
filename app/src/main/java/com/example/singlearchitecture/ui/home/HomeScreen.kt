@@ -1,11 +1,10 @@
 package com.example.singlearchitecture.ui.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,46 +14,43 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Refresh
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter.State.Empty.painter
+import com.example.singlearchitecture.R
 import com.example.singlearchitecture.data.networks.model.UsersRandomModelItem
-import com.example.singlearchitecture.ui.Screen
 import com.example.singlearchitecture.ui.theme.Triadic100
 import com.example.singlearchitecture.ui.theme.Triadic50
+import com.example.singlearchitecture.widget.ButtonFend
 
 @Composable
 fun HomeScreen(vm: HomeViewModel, navigate: (String) -> Unit) {
@@ -188,13 +184,74 @@ fun ErrorScreen(message: String) {
     }
 }
 
+@Composable
+fun ItemListUser() {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 16.dp)
+    ) {
+        val (image, chip, title, description) = createRefs()
+        AsyncImage(
+            model = "",
+            contentDescription = "User Profile Pics",
+            modifier = Modifier
+                .constrainAs(image) {
+                    top.linkTo(parent.top)
+                }
+                .padding(top = 10.dp)
+                .height(70.dp)
+                .width(75.dp),
+            placeholder = painterResource(R.drawable.ic_launcher_background)
+        )
+
+        Text(
+            text = "Title",
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.SansSerif,
+            modifier = Modifier
+                .constrainAs(title) {
+                    top.linkTo(image.top)
+                    start.linkTo(image.end)
+                }
+                .padding(start = 10.dp, top = 10.dp)
+        )
+
+        Text(
+            text = "Lorem ipsum draferi for htik queente supreme zaragoca litium do jin fus",
+            fontSize = 10.sp,
+            fontFamily = FontFamily.SansSerif,
+            modifier = Modifier
+                .constrainAs(description) {
+                    top.linkTo(title.bottom)
+                    start.linkTo(title.start)
+                }
+                .padding(start = 10.dp, end = 10.dp)
+                .size(200.dp, 40.dp),
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 3,
+            color = Color.Gray
+        )
+        ButtonFend(modifier = Modifier
+            .width(70.dp)
+            .height(30.dp)
+            .constrainAs(chip) {
+                top.linkTo(description.bottom)
+                end.linkTo(parent.end)
+            }
+        )
+    }
+}
+
 @Preview
 @Composable
 fun PreviewHomeContent() {
     Surface {
-        HomeStateScreen(
-            uiState = HomeUiState.Success(data = emptyList(), loadNextPage = true),
-            navigate = {
-            })
+//        HomeStateScreen(
+//            uiState = HomeUiState.Success(data = emptyList(), loadNextPage = true),
+//            navigate = {
+//            })
+        ItemListUser()
     }
 }
