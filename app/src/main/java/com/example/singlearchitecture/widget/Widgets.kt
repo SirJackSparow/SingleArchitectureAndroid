@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -43,21 +44,41 @@ fun ButtonFend(
         )
     ) {
         Text(
-            text = type,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.wrapContentHeight()
+            text = type, textAlign = TextAlign.Center, modifier = Modifier.wrapContentHeight()
         )
 
+    }
+}
+
+object CustomButton {
+
+    @Composable
+    operator fun invoke(name: String, modifier: Modifier = Modifier) {
+        Surface(modifier = modifier, contentColor = Triadic100, shape = RoundedCornerShape(20.dp)) {
+            Text(text = name, textAlign = TextAlign.Center, modifier = Modifier.wrapContentHeight())
+        }
+    }
+
+    @Composable
+    fun Filled(name: String, modifier: Modifier = Modifier) {
+        Surface(modifier = modifier, color = Triadic100, shape = RoundedCornerShape(20.dp)) {
+            Text(
+                text = name,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.wrapContentHeight(),
+                style = TextStyle(color = Color.White)
+            )
+        }
     }
 }
 
 @Preview
 @Composable
 fun PreviewRoundedShapeDesign() {
-    ButtonFend(
+    CustomButton.Filled(
+        name = "Users",
         modifier = Modifier
             .width(100.dp)
             .height(50.dp),
-        type = "Users"
     )
 }
