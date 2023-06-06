@@ -129,7 +129,7 @@ fun InstagramIcon() {
     ) {
         drawRoundRect(
             brush = Brush.linearGradient(colors = instaColors),
-            cornerRadius = CornerRadius(10f, 90f),
+            cornerRadius = CornerRadius(10f, 10f),
             style = Stroke(width = 15f, cap = StrokeCap.Round)
         )
         drawCircle(
@@ -143,6 +143,24 @@ fun InstagramIcon() {
             center = Offset(this.size.width * .80f, this.size.height * 0.20f),
         )
     }
+}
+
+@Composable
+fun SomeIcons() {
+    val instaColors = listOf(Color.Yellow, Color.Red, Color.Magenta)
+    Canvas(modifier = Modifier.size(100.dp), onDraw = {
+        drawCircle(
+            brush = Brush.horizontalGradient(colors = instaColors),
+            radius = 20f,
+            style = Stroke(width = 18f, cap = StrokeCap.Butt),
+            center = Offset(x = this.size.width / 1.5f, y = this.size.height * 0.30f)
+        )
+
+        drawCircle(
+            brush = Brush.horizontalGradient(colors = instaColors),
+            radius = 12f,
+        )
+    })
 }
 
 @Composable
@@ -252,4 +270,10 @@ fun PreviewDrawingCompose() {
             .fillMaxSize()
             .background(Color.Black))
     }
+}
+
+@Preview
+@Composable
+fun PreviewIcons() {
+    SomeIcons()
 }

@@ -60,7 +60,6 @@ import com.example.singlearchitecture.widget.ButtonFend
 @Composable
 fun HomeScreen(vm: HomeViewModel, navigate: (String) -> Unit) {
     val uiState by vm.uiState.collectAsStateWithLifecycle()
-    Log.e("TAG", uiState.toString() )
     HomeStateScreen(uiState = uiState, navigate = navigate, nextPaging = { vm.nextPage() })
 }
 
