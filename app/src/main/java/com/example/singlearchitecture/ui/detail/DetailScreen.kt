@@ -12,12 +12,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.singlearchitecture.R
-import kotlinx.html.body
-import kotlinx.html.dom.*
-import kotlinx.html.h1
-import kotlinx.html.head
-import kotlinx.html.html
-import kotlinx.html.title
+//import kotlinx.html.body
+//import kotlinx.html.dom.*
+//import kotlinx.html.h1
+//import kotlinx.html.head
+//import kotlinx.html.html
+//import kotlinx.html.title
 
 @Composable
 fun DetailScreen(vm: DetailViewModel) {
@@ -41,16 +41,16 @@ fun DetailContent() {
     }
 }
 
-fun htmlPages() {
-    val mytheme = createHTMLDocument().html {
-        head {
-            title { +"Kotlin Learning Html" }
-        }
-        body {
-            h1 { + "Nice features" }
-        }
-    }
-}
+//fun htmlPages() {
+//    val mytheme = createHTMLDocument().html {
+//        head {
+//            title { +"Kotlin Learning Html" }
+//        }
+//        body {
+//            h1 { + "Nice features" }
+//        }
+//    }
+//}
 
 
 @Preview

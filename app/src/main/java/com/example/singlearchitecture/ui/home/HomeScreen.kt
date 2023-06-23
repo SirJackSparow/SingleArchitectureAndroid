@@ -1,5 +1,6 @@
 package com.example.singlearchitecture.ui.home
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,6 +20,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Refresh
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -36,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -49,6 +52,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.work.OneTimeWorkRequest
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter.State.Empty.painter
 import com.example.singlearchitecture.R
@@ -77,7 +84,8 @@ fun HomeStateScreen(
             list = uiState.data,
             uiState = uiState,
             nextPaging = nextPaging,
-            loadNext = uiState.loadNextPage
+            loadNext = uiState.loadNextPage,
+            context = LocalContext.current
         )
 
         is HomeUiState.Error -> ErrorScreen(message = uiState.message)
@@ -91,7 +99,8 @@ fun HomeContent(
     list: List<UsersRandomModelItem>,
     uiState: HomeUiState,
     nextPaging: () -> Unit,
-    loadNext: Boolean
+    loadNext: Boolean,
+    context: Context
 ) {
 
     val stateList = rememberLazyListState()
@@ -166,6 +175,12 @@ fun HomeContent(
                         modifier = Modifier.padding(20.dp)
                     )
                 }
+            }
+            Button(onClick = {
+                val nn: WorkRequest = OneTimeWorkRequestBuilder<OneDemandWorker>().build()
+                WorkManager.getInstance(context).enqueue(nn)
+            }) {
+                Text(text = "Work Managers")
             }
             LazyColumn(state = stateList) {
                 items(list) { userItems ->
